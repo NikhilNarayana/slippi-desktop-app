@@ -106,46 +106,61 @@ export default class GameProfile extends Component {
   }
 
   renderMatchupDisplay() {
+    const gameSettings = _.get(this.props.store, ['game', 'settings']) || {};
+    const classes = classNames({
+      [styles['matchup-display']]: true,
+      [styles['singles']]: !gameSettings.isTeams,
+      [styles['doubles']]: gameSettings.isTeams,
+    });
     return (
-      <div className={styles['matchup-display']}>
-        {this.renderPlayerDisplay(0)}
-        <span className={styles['vs-element']}>vs</span>
-        {this.renderPlayerDisplay(1)}
+      <div className={classes}>
+        {this.renderPlayerDisplay()}
         {this.renderPlayButton()}
       </div>
     );
   }
 
-  renderPlayerDisplay(index) {
-    const isFirstPlayer = index === 0;
+  renderPlayerDisplay() {
 
     const gameSettings = _.get(this.props.store, ['game', 'settings']) || {};
-    const players = gameSettings.players || [];
-    const player = (isFirstPlayer ? _.first(players) : _.last(players)) || {};
 
-    const segmentClasses = classNames({
-      [styles['player-display']]: true,
-      [styles['second']]: !isFirstPlayer,
-      'horizontal-spaced-group-right-sm': isFirstPlayer,
-      'horizontal-spaced-group-left-sm': !isFirstPlayer,
-    });
+    const teams = _.chain(gameSettings.players)
+      .groupBy(player => (gameSettings.isTeams ? player.teamId : player.port))
+      .toArray()
+      .value();
 
     const game = this.props.store.game;
     const playerNamesByIndex = playerUtils.getPlayerNamesByIndex(game);
 
-    return (
-      <Segment className={segmentClasses} textAlign="center" basic={true}>
-        <Header inverted={true} textAlign="center" as="h2">
-          {playerNamesByIndex[player.playerIndex]}
-        </Header>
-        <Image
-          className={styles['character-image']}
-          src={getLocalImage(
-            `stock-icon-${player.characterId}-${player.characterColor}.png`
-          )}
-        />
-      </Segment>
-    );
+    const elements = [];
+    let playerOrder = 0;
+    _.each(teams, (team, idx) => {
+      _.each(team, (player) => {
+        playerOrder += 1;
+        const segmentClasses = classNames({
+          [styles['player-display']]: true,
+          [styles['second']]: idx,
+          [styles[`p${playerOrder}`]]: true,
+          'horizontal-spaced-group-right-sm': !idx,
+          'horizontal-spaced-group-left-sm': idx,
+        });
+        elements.push(
+          <Segment className={segmentClasses} textAlign="center" basic={true}>
+            <Header key={playerOrder} inverted={true} textAlign="center" as="h2">
+              {playerNamesByIndex[player.playerIndex]}
+            </Header>
+            <Image
+              className={styles['character-image']}
+              src={getLocalImage(
+                `stock-icon-${player.characterId}-${player.characterColor}.png`
+              )}
+            />
+          </Segment>
+        );
+      });
+      if (idx < teams.length - 1) elements.push(<span className={styles['vs-element']}>vs</span>);
+    });
+    return elements;
   }
 
   renderGameDetails() {

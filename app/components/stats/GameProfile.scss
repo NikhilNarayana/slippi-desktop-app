@@ -13,8 +13,18 @@ $header-height: 97px;
 
   .matchup-display {
     display: grid;
-    grid-template-columns: auto auto auto 1fr;
     align-items: center;
+
+    .vs-element {
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 0.8;
+      width: 20px;
+      height: 18px;
+      font-weight: bold;
+      font-size: 1.4em;
+      text-align: center;
+      grid-area: vs;
+    }
 
     .player-display {
       margin-top: 0 !important;
@@ -38,11 +48,38 @@ $header-height: 97px;
         margin-bottom: 0;
         margin-top: 0;
       }
+
+      .p1 {
+        grid-area: p1;
+      }
+
+      .p2 {
+        grid-area: p2;
+      }
+
+      .p3 {
+        grid-area: p3;
+      }
+
+      .p4 {
+        grid-area: p4;
+      }
     }
 
     .play-button {
       justify-self: end;
+      grid-area: playbutton;
     }
+  }
+
+  .doubles {
+    grid-template-columns: auto auto auto auto auto 1fr;
+    grid-template-areas: "p1 p2 vs p3 p4 playbutton";
+  }
+
+  .singles {
+    grid-template-columns: auto auto auto 1fr;
+    grid-template-areas: "p1 vs p2 playbutton";
   }
 
   .game-details {
@@ -79,16 +116,6 @@ $header-height: 97px;
     height: 36px !important;
     width: 36px !important;
   }
-}
-
-.vs-element {
-  color: rgba(255, 255, 255, 0.5);
-  line-height: 0.8;
-  width: 20px;
-  height: 18px;
-  font-weight: bold;
-  font-size: 1.4em;
-  text-align: center;
 }
 
 .section-header {
