@@ -71,7 +71,7 @@ export default class KillsTable extends Component {
     const killingPunishesByEndFrame = _.keyBy(killingPunishes, 'endFrame');
     const punishThatEndedStock = killingPunishesByEndFrame[stock.endFrame];
 
-    if (!punishThatEndedStock) {
+    if (!punishThatEndedStock || punishThatEndedStock.moves.length === 0) {
       return <span className={styles['secondary-text']}>Self Destruct</span>;
     }
 
