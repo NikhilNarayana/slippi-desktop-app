@@ -24,14 +24,14 @@ SOFTWARE.
 
 */
 
-
 import net from 'net';
+
 import _ from 'lodash';
-import fs from 'fs-extra';
 import path from 'path';
+import fs from 'fs-extra';
 import moment from 'moment';
+import { Ports } from 'slp-wii-connect';
 import OBSWebSocket from 'obs-websocket-js'
-import { Ports } from './ConsoleConnection'
 
 export default class SlpFileWriter {
   static commands = {

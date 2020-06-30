@@ -1,19 +1,20 @@
+import path from 'path';
+
 import _ from 'lodash';
-import classNames from 'classnames';
-import React, { Component } from 'react';
 import semver from 'semver';
 import PropTypes from 'prop-types';
-import path from 'path';
+import classNames from 'classnames';
+import React, { Component } from 'react';
+import { ConnectionStatus, Ports } from 'slp-wii-connect';
 import { Header, Modal, Form, Card, Button, Icon, Checkbox, Message, Tab, Grid } from 'semantic-ui-react';
-import { ConnectionStatus, Ports } from '../domain/ConsoleConnection';
-import PageHeader from './common/PageHeader';
-import PageWrapper from './PageWrapper';
-import DismissibleMessage from './common/DismissibleMessage';
 
 import styles from './Console.scss';
+import PageWrapper from './PageWrapper';
+import Scroller from './common/Scroller';
+import PageHeader from './common/PageHeader';
 import SpacedGroup from './common/SpacedGroup';
 import ActionInput from './common/ActionInput';
-import Scroller from './common/Scroller';
+import DismissibleMessage from './common/DismissibleMessage';
 
 const { dialog } = require('electron').remote;
 

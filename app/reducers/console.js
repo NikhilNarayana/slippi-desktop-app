@@ -1,7 +1,7 @@
 import electronSettings from 'electron-settings';
 import _ from 'lodash';
 
-import ConsoleConnection from '../domain/ConsoleConnection';
+import SLPNetworking from '../domain/SLPNetworking';
 
 import {
   CONNECTION_CANCEL_EDIT, CONNECTION_EDIT, CONNECTION_SAVE, CONNECTION_DELETE,
@@ -20,7 +20,7 @@ const defaultState = {
 function getStoredConnections() {
   const serializedConnections = electronSettings.get(connectionPath) || [];
   return _.map(serializedConnections, (serializedConnection) => (
-    new ConsoleConnection(serializedConnection)
+    new SLPNetworking(serializedConnection)
   ));
 }
 
@@ -79,7 +79,7 @@ function saveConnection(state, action) {
   if (connectionToEdit) {
     connectionToEdit.editSettings(settings);
   } else {
-    const newConnection = new ConsoleConnection(settings);
+    const newConnection = new SLPNetworking(settings);
     connectionsById[newConnection.id] = newConnection;
   }
 
